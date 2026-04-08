@@ -1,0 +1,17 @@
+@RestResource(urlMapping='/orders/*')
+global with sharing class OrderController {
+
+    @HttpPost
+    global static String createOrder(String requestBody) {
+
+        Order__c ord = (Order__c) JSON.deserialize(requestBody, Order__c.class);
+        insert ord;
+
+        return 'Order Created Successfully';
+    }
+
+    @HttpGet
+    global static List<Order__c> getOrders() {
+        return [SELECT Id, Name, Status__c FROM Order__c LIMIT 50];
+    }
+}
