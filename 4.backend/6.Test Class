@@ -1,0 +1,22 @@
+@isTest
+public class OrderServiceTest {
+
+    @isTest
+    static void testOrderProcessing() {
+
+        Order__c ord = new Order__c(
+            Name = 'Test Order',
+            Status__c = 'New'
+        );
+
+        insert ord;
+
+        Test.startTest();
+        OrderService.processNewOrders(new List<Order__c>{ord});
+        Test.stopTest();
+
+        Order__c updated = [SELECT Status__c FROM Order__c WHERE Id = :ord.Id];
+
+        System.assertEquals('Processing', updated.Status__c);
+    }
+}
